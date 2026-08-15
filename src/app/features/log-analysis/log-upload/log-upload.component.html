@@ -1,0 +1,79 @@
+<div class="page-header">
+
+  <h2>Analyze Log</h2>
+
+  <p>
+    Upload a production log for analysis.
+  </p>
+
+</div>
+
+
+<section class="upload-panel">
+
+  <div class="upload-icon">
+    📄
+  </div>
+
+  <h3>
+    Upload Log File
+  </h3>
+
+  <p>
+    Supported formats: .log, .txt
+  </p>
+
+
+  <label class="file-button">
+
+    Choose File
+
+    <input
+      type="file"
+      hidden
+      accept=".log,.txt"
+      (change)="onFileSelected($event)"
+    />
+
+  </label>
+
+
+  @if (selectedFile) {
+
+    <div class="selected-file">
+
+      <strong>
+        {{ selectedFile.name }}
+      </strong>
+
+      <span>
+        {{ selectedFile.size / 1024 | number:'1.0-2' }}
+        KB
+      </span>
+
+    </div>
+
+  }
+
+
+  @if (error) {
+
+    <div class="error-message">
+
+      {{ error }}
+
+    </div>
+
+  }
+
+
+  <button
+    class="analyze-button"
+    [disabled]="!selectedFile || loading"
+    (click)="analyze()">
+
+    {{ loading ? 'Analyzing...' : 'Analyze Log' }}
+
+  </button>
+
+</section>

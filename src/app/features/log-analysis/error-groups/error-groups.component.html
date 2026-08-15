@@ -1,0 +1,88 @@
+<div class="page-header">
+
+  <h2>Error Groups</h2>
+
+  <p>
+    Fingerprinted and grouped production errors.
+  </p>
+
+</div>
+
+
+@if (!groups.length) {
+
+  <app-empty-state
+    title="No Error Groups"
+    message="No grouped errors are currently available."
+    icon="✓">
+  </app-empty-state>
+
+} @else {
+
+  <section class="panel">
+
+    <table>
+
+      <thead>
+
+      <tr>
+
+        <th>Fingerprint</th>
+
+        <th>Message</th>
+
+        <th>Count</th>
+
+        <th>First Occurrence</th>
+
+        <th>Last Occurrence</th>
+
+      </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        @for (
+          group of groups;
+          track group.fingerprint
+          ) {
+
+          <tr>
+
+            <td>
+              <code>
+                {{ group.fingerprint }}
+              </code>
+            </td>
+
+            <td>
+              {{ group.normalizedMessage }}
+            </td>
+
+            <td>
+              <strong>
+                {{ group.count }}
+              </strong>
+            </td>
+
+            <td>
+              {{ group.firstOccurrence }}
+            </td>
+
+            <td>
+              {{ group.lastOccurrence }}
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </section>
+
+}

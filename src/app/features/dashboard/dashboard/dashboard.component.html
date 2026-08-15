@@ -1,0 +1,93 @@
+<div class="page-header">
+
+  <div>
+
+    <h2>Operations Dashboard</h2>
+
+    <p>
+      Production log intelligence and
+      incident analysis.
+    </p>
+
+  </div>
+
+  <button
+    class="primary-button"
+    routerLink="/analyze">
+
+    Analyze New Log
+
+  </button>
+
+</div>
+
+
+<div class="metric-grid">
+
+  <app-metric-card
+    label="Total Events"
+    value="—">
+  </app-metric-card>
+
+  <app-metric-card
+    label="Errors"
+    value="—">
+  </app-metric-card>
+
+  <app-metric-card
+    label="Error Groups"
+    value="—">
+  </app-metric-card>
+
+  <app-metric-card
+    label="Anomalies"
+    value="—">
+  </app-metric-card>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+  <section class="panel">
+
+    <h3>Quick Actions</h3>
+
+    <div class="actions">
+
+      <button routerLink="/analyze">
+        Analyze Log
+      </button>
+
+      <button routerLink="/deployment-comparison">
+        Compare Deployment
+      </button>
+
+      <button routerLink="/incident-report">
+        Incident Report
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <section class="panel">
+
+    <h3>AI Capabilities</h3>
+
+    <ul>
+
+      <li>AI Root Cause Analysis</li>
+
+      <li>Exception Analysis</li>
+
+      <li>Anomaly Detection</li>
+
+      <li>Deployment Analysis</li>
+
+    </ul>
+
+  </section>
+
+</div>

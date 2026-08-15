@@ -1,0 +1,90 @@
+<div class="page-header">
+
+  <h2>Deployment Comparison</h2>
+
+  <p>
+    Compare system behavior before and after deployment.
+  </p>
+
+</div>
+
+
+<section class="upload-grid">
+
+  <div class="upload-card">
+
+    <h3>Before Deployment</h3>
+
+    <input
+      type="file"
+      accept=".log,.txt"
+      (change)="selectBefore($event)"
+    />
+
+    @if (beforeFile) {
+
+      <p>
+        {{ beforeFile.name }}
+      </p>
+
+    }
+
+  </div>
+
+
+  <div class="upload-card">
+
+    <h3>After Deployment</h3>
+
+    <input
+      type="file"
+      accept=".log,.txt"
+      (change)="selectAfter($event)"
+    />
+
+    @if (afterFile) {
+
+      <p>
+        {{ afterFile.name }}
+      </p>
+
+    }
+
+  </div>
+
+</section>
+
+
+@if (error) {
+
+  <div class="error">
+    {{ error }}
+  </div>
+
+}
+
+
+<button
+  class="compare-button"
+  [disabled]="
+    !beforeFile ||
+    !afterFile ||
+    loading
+  "
+  (click)="compare()">
+
+  {{ loading
+  ? 'Comparing...'
+  : 'Compare Deployment'
+  }}
+
+</button>
+
+
+@if (result) {
+
+  <app-deployment-result
+    [result]="result">
+  </app-deployment-result>
+
+}

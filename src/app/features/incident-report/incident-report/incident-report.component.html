@@ -1,0 +1,149 @@
+<div class="page-header">
+
+  <div>
+
+    <h2>Incident Report</h2>
+
+    <p>
+      Generate an operational incident report.
+    </p>
+
+  </div>
+
+</div>
+
+
+<section class="panel">
+
+  <input
+    type="file"
+    accept=".log,.txt"
+    (change)="selectFile($event)"
+  />
+
+  <button
+    [disabled]="!selectedFile || loading"
+    (click)="generate()">
+
+    {{ loading
+    ? 'Generating...'
+    : 'Generate Report'
+    }}
+
+  </button>
+
+</section>
+
+
+@if (error) {
+
+  <div class="error">
+    {{ error }}
+  </div>
+
+}
+
+
+@if (report) {
+
+  <section class="report">
+
+    <div class="report-header">
+
+      <div>
+
+        <h2>
+          {{ report.title }}
+        </h2>
+
+        <p>
+          {{ report.incidentId }}
+        </p>
+
+      </div>
+
+      <app-severity-badge
+        [severity]="report.severity">
+      </app-severity-badge>
+
+    </div>
+
+
+    <div class="summary">
+
+      {{ report.summary }}
+
+    </div>
+
+
+    <div class="metrics">
+
+      <div>
+        <span>Events</span>
+        <strong>
+          {{ report.totalEvents }}
+        </strong>
+      </div>
+
+      <div>
+        <span>Errors</span>
+        <strong>
+          {{ report.totalErrors }}
+        </strong>
+      </div>
+
+      <div>
+        <span>Traces</span>
+        <strong>
+          {{ report.totalTraces }}
+        </strong>
+      </div>
+
+      <div>
+        <span>Affected Traces</span>
+        <strong>
+          {{ report.affectedTraces }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <app-rca
+      [rca]="report.rca">
+    </app-rca>
+
+
+    <section>
+
+      <h3>Recommendations</h3>
+
+      <ol>
+
+        @for (
+          recommendation of report.recommendations;
+          track $index
+          ) {
+
+          <li>
+            {{ recommendation }}
+          </li>
+
+        }
+
+      </ol>
+
+    </section>
+
+
+    <button
+      class="download"
+      (click)="downloadMarkdown()">
+
+      Download Markdown Report
+
+    </button>
+
+  </section>
+
+}

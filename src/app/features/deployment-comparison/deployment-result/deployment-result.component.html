@@ -1,0 +1,207 @@
+@if (result) {
+
+  <section class="result">
+
+    <div
+      class="status"
+      [class.regressed]="
+        result.summary.status === 'REGRESSED'
+      "
+      [class.improved]="
+        result.summary.status === 'IMPROVED'
+      ">
+
+      <h2>
+        {{ result.summary.status }}
+      </h2>
+
+      <p>
+        {{ result.summary.message }}
+      </p>
+
+    </div>
+
+
+    <div class="metric-grid">
+
+      <div class="metric">
+
+        <span>Before Errors</span>
+
+        <strong>
+          {{ result.metrics.beforeErrors }}
+        </strong>
+
+      </div>
+
+
+      <div class="metric">
+
+        <span>After Errors</span>
+
+        <strong>
+          {{ result.metrics.afterErrors }}
+        </strong>
+
+      </div>
+
+
+      <div class="metric">
+
+        <span>Before Error Rate</span>
+
+        <strong>
+          {{ result.metrics.beforeErrorRate }}
+        </strong>
+
+      </div>
+
+
+      <div class="metric">
+
+        <span>After Error Rate</span>
+
+        <strong>
+          {{ result.metrics.afterErrorRate }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="comparison-grid">
+
+      <section>
+
+        <h3>New Errors</h3>
+
+        <ul>
+
+          @for (
+            error of result.errors.newErrors;
+            track error
+            ) {
+
+            <li>
+              {{ error }}
+            </li>
+
+          }
+
+        </ul>
+
+      </section>
+
+
+      <section>
+
+        <h3>Resolved Errors</h3>
+
+        <ul>
+
+          @for (
+            error of result.errors.resolvedErrors;
+            track error
+            ) {
+
+            <li>
+              {{ error }}
+            </li>
+
+          }
+
+        </ul>
+
+      </section>
+
+
+      <section>
+
+        <h3>Increased Errors</h3>
+
+        <ul>
+
+          @for (
+            error of result.errors.increasedErrors;
+            track error
+            ) {
+
+            <li>
+              {{ error }}
+            </li>
+
+          }
+
+        </ul>
+
+      </section>
+
+
+      <section>
+
+        <h3>Decreased Errors</h3>
+
+        <ul>
+
+          @for (
+            error of result.errors.decreasedErrors;
+            track error
+            ) {
+
+            <li>
+              {{ error }}
+            </li>
+
+          }
+
+        </ul>
+
+      </section>
+
+    </div>
+
+
+    @if (result.aiAnalysis) {
+
+      <section class="ai-analysis">
+
+        <h3>
+          AI Deployment Assessment
+        </h3>
+
+        <p>
+          {{ result.aiAnalysis }}
+        </p>
+
+      </section>
+
+    }
+
+
+    <section>
+
+      <h3>
+        Recommendations
+      </h3>
+
+      <ol>
+
+        @for (
+          recommendation of result.recommendations;
+          track $index
+          ) {
+
+          <li>
+            {{ recommendation }}
+          </li>
+
+        }
+
+      </ol>
+
+    </section>
+
+  </section>
+
+}

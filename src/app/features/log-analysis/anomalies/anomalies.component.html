@@ -1,0 +1,79 @@
+<div class="page-header">
+
+  <h2>Anomaly Detection</h2>
+
+  <p>
+    Unusual behavior detected in the logs.
+  </p>
+
+</div>
+
+
+<section class="panel">
+
+  @if (!anomalies.length) {
+
+    <div class="empty">
+      No anomalies detected.
+    </div>
+
+  } @else {
+
+    <table>
+
+      <thead>
+
+      <tr>
+        <th>Type</th>
+        <th>Severity</th>
+        <th>Score</th>
+        <th>Description</th>
+        <th>Timestamp</th>
+      </tr>
+
+      </thead>
+
+      <tbody>
+
+        @for (
+          anomaly of anomalies;
+          track $index
+          ) {
+
+          <tr>
+
+            <td>
+              {{ anomaly.type }}
+            </td>
+
+            <td>
+
+              <app-severity-badge
+                [severity]="anomaly.severity">
+              </app-severity-badge>
+
+            </td>
+
+            <td>
+              {{ anomaly.score }}
+            </td>
+
+            <td>
+              {{ anomaly.description }}
+            </td>
+
+            <td>
+              {{ anomaly.timestamp || '—' }}
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  }
+
+</section>

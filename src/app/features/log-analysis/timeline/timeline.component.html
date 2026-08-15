@@ -1,0 +1,55 @@
+<div class="page-header">
+
+  <h2>Timeline Reconstruction</h2>
+
+  <p>
+    Chronological view of important log events.
+  </p>
+
+</div>
+
+
+<section class="timeline">
+
+  @for (
+    event of events;
+    track $index
+    ) {
+
+    <div class="timeline-item">
+
+      <div class="timeline-time">
+
+        {{ event.timestamp }}
+
+      </div>
+
+
+      <div class="timeline-dot"></div>
+
+
+      <div class="timeline-content">
+
+        <app-severity-badge
+          [severity]="event.level">
+        </app-severity-badge>
+
+        <p>
+          {{ event.message }}
+        </p>
+
+        @if (event.fingerprint) {
+
+          <small>
+            {{ event.fingerprint }}
+          </small>
+
+        }
+
+      </div>
+
+    </div>
+
+  }
+
+</section>

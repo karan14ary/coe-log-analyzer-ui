@@ -1,0 +1,98 @@
+<div class="page-header">
+
+  <h2>AI Root Cause Analysis</h2>
+
+  <p>
+    Ollama-powered analysis of the detected incident.
+  </p>
+
+</div>
+
+
+@if (!rca) {
+
+  <div class="empty">
+    Run an analysis to generate RCA.
+  </div>
+
+} @else {
+
+  <section class="rca-panel">
+
+    <div class="rca-header">
+
+      <h3>
+        Root Cause
+      </h3>
+
+      <span>
+        {{ rca.confidence }}% confidence
+      </span>
+
+    </div>
+
+
+    <div class="root-cause">
+
+      {{ rca.rootCause }}
+
+    </div>
+
+
+    <div class="section">
+
+      <h4>Impact</h4>
+
+      <p>
+        {{ rca.impact }}
+      </p>
+
+    </div>
+
+
+    <div class="section">
+
+      <h4>Evidence</h4>
+
+      <ul>
+
+        @for (
+          evidence of rca.evidence;
+          track $index
+          ) {
+
+          <li>
+            {{ evidence }}
+          </li>
+
+        }
+
+      </ul>
+
+    </div>
+
+
+    <div class="section">
+
+      <h4>Recommendations</h4>
+
+      <ol>
+
+        @for (
+          recommendation of rca.recommendations;
+          track $index
+          ) {
+
+          <li>
+            {{ recommendation }}
+          </li>
+
+        }
+
+      </ol>
+
+    </div>
+
+  </section>
+
+}

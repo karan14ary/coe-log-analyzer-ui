@@ -1,0 +1,124 @@
+<div class="page-header">
+
+  <h2>Analysis Summary</h2>
+
+  <p>
+    Overview of the analyzed log.
+  </p>
+
+</div>
+
+
+@if (!result) {
+
+  <app-empty-state
+    title="No Analysis Available"
+    message="Analyze a log file first."
+    icon="📄">
+  </app-empty-state>
+
+} @else {
+
+  <div class="metric-grid">
+
+    <app-metric-card
+      label="Events"
+      [value]="result.totalEvents">
+    </app-metric-card>
+
+    <app-metric-card
+      label="Errors"
+      [value]="result.totalErrors">
+    </app-metric-card>
+
+    <app-metric-card
+      label="Warnings"
+      [value]="result.totalWarnings">
+    </app-metric-card>
+
+    <app-metric-card
+      label="Critical"
+      [value]="result.totalCritical">
+    </app-metric-card>
+
+    <app-metric-card
+      label="Anomalies"
+      [value]="result.totalAnomalies">
+    </app-metric-card>
+
+  </div>
+
+
+  <div class="grid">
+
+    <section class="panel">
+
+      <h3>Severity Distribution</h3>
+
+      <div class="row">
+        <span>Critical</span>
+        <strong>
+          {{ result.severityDistribution.critical }}
+        </strong>
+      </div>
+
+      <div class="row">
+        <span>Error</span>
+        <strong>
+          {{ result.severityDistribution.error }}
+        </strong>
+      </div>
+
+      <div class="row">
+        <span>Warning</span>
+        <strong>
+          {{ result.severityDistribution.warning }}
+        </strong>
+      </div>
+
+      <div class="row">
+        <span>Info</span>
+        <strong>
+          {{ result.severityDistribution.info }}
+        </strong>
+      </div>
+
+    </section>
+
+
+    <section class="panel">
+
+      <h3>Top Error Groups</h3>
+
+      @for (
+        group of result.errorGroups;
+        track group.fingerprint
+        ) {
+
+        <div class="error-row">
+
+          <div>
+
+            <strong>
+              {{ group.normalizedMessage }}
+            </strong>
+
+            <small>
+              {{ group.fingerprint }}
+            </small>
+
+          </div>
+
+          <span>
+            {{ group.count }}
+          </span>
+
+        </div>
+
+      }
+
+    </section>
+
+  </div>
+
+}

@@ -26,28 +26,38 @@
 
   <app-metric-card
     label="Total Events"
-    value="—">
+    [value]="result ? result.totalLines : '—'">
   </app-metric-card>
 
   <app-metric-card
     label="Errors"
-    value="—">
+    [value]="result ? result.errorCount : '—'">
   </app-metric-card>
 
   <app-metric-card
-    label="Error Groups"
-    value="—">
+    label="Warnings"
+    [value]="result ? result.warningCount : '—'">
   </app-metric-card>
 
   <app-metric-card
-    label="Anomalies"
-    value="—">
+    label="AI Confidence"
+    [value]="result ? (result.analysis.confidence * 100).toFixed(0) + '%' : '—'">
   </app-metric-card>
 
 </div>
 
-
 <div class="dashboard-grid">
+
+  @if (result) {
+    <section class="panel active-analysis">
+      <h3>Active Analysis Insight</h3>
+      <div class="insight-content">
+        <p><strong>Summary:</strong> {{ result.analysis.summary }}</p>
+        <p><strong>Root Cause:</strong> {{ result.analysis.rootCause }}</p>
+        <button class="view-rca-btn" routerLink="/rca">View Full RCA</button>
+      </div>
+    </section>
+  }
 
   <section class="panel">
 

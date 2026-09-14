@@ -12,6 +12,11 @@ import {
 } from '../../../core/services/analysis-state.service';
 
 import {
+  CommonModule
+} from '@angular/common';
+
+import {
+  LogAnalysisResult,
   TimelineEvent
 } from '../../../core/models/log-analysis.model';
 
@@ -25,6 +30,7 @@ import {
   standalone: true,
 
   imports: [
+    CommonModule,
     SeverityBadgeComponent
   ],
 
@@ -49,7 +55,7 @@ export class TimelineComponent
 
     this.subscription =
       this.state.result$
-        .subscribe(result => {
+        .subscribe((result: LogAnalysisResult | null) => {
 
           this.events =
             result?.timeline ?? [];

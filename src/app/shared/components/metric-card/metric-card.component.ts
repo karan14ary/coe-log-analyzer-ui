@@ -12,7 +12,7 @@ export class MetricCardComponent {
   label = '';
 
   @Input()
-  value: string | number = '';
+  value: string | number | null = '';
 
   @Input()
   subtitle = '';

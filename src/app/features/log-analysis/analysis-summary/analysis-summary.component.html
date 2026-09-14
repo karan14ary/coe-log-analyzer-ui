@@ -1,124 +1,91 @@
 <div class="page-header">
-
   <h2>Analysis Summary</h2>
-
-  <p>
-    Overview of the analyzed log.
-  </p>
-
+  <p>Overview of the analyzed log with AI-driven insights.</p>
 </div>
 
-
 @if (!result) {
-
   <app-empty-state
     title="No Analysis Available"
-    message="Analyze a log file first."
+    message="Analyze a log file first to see AI insights."
     icon="📄">
   </app-empty-state>
-
 } @else {
-
   <div class="metric-grid">
-
     <app-metric-card
-      label="Events"
-      [value]="result.totalEvents">
+      label="Total Lines Processed"
+      [value]="result.totalLines">
     </app-metric-card>
 
     <app-metric-card
-      label="Errors"
-      [value]="result.totalErrors">
+      label="Errors Detected"
+      [value]="result.errorCount">
     </app-metric-card>
 
     <app-metric-card
-      label="Warnings"
-      [value]="result.totalWarnings">
+      label="Warnings Found"
+      [value]="result.warningCount">
     </app-metric-card>
 
     <app-metric-card
-      label="Critical"
-      [value]="result.totalCritical">
+      label="AI Confidence"
+      [value]="(result.analysis.confidence * 100).toFixed(0) + '%'">
     </app-metric-card>
-
-    <app-metric-card
-      label="Anomalies"
-      [value]="result.totalAnomalies">
-    </app-metric-card>
-
   </div>
-
 
   <div class="grid">
-
-    <section class="panel">
-
-      <h3>Severity Distribution</h3>
-
-      <div class="row">
-        <span>Critical</span>
-        <strong>
-          {{ result.severityDistribution.critical }}
-        </strong>
+    <!-- AI Summary & Impact -->
+    <section class="panel ai-insight-panel">
+      <div class="panel-header">
+        <h3>AI Analysis</h3>
+        <span class="severity-badge" [attr.data-severity]="result.analysis.severity.toLowerCase()">
+          {{ result.analysis.severity }}
+        </span>
       </div>
 
-      <div class="row">
-        <span>Error</span>
-        <strong>
-          {{ result.severityDistribution.error }}
-        </strong>
+      <div class="insight-section">
+        <h4>Summary</h4>
+        <p>{{ result.analysis.summary }}</p>
       </div>
 
-      <div class="row">
-        <span>Warning</span>
-        <strong>
-          {{ result.severityDistribution.warning }}
-        </strong>
+      <div class="insight-section">
+        <h4>Root Cause Identification</h4>
+        <p class="root-cause">{{ result.analysis.rootCause }}</p>
       </div>
 
-      <div class="row">
-        <span>Info</span>
-        <strong>
-          {{ result.severityDistribution.info }}
-        </strong>
+      <div class="insight-section">
+        <h4>Business Impact</h4>
+        <p>{{ result.analysis.impact }}</p>
       </div>
 
+      <div class="rca-link-section">
+        <a class="rca-button" routerLink="/rca">
+          View Detailed Root Cause Analysis
+        </a>
+      </div>
     </section>
 
+    <!-- Observations & Recommendations -->
+    <div class="side-panels">
+      <section class="panel">
+        <h3>Key Observations</h3>
+        <ul class="observation-list">
+          @for (obs of result.analysis.observations; track obs) {
+            <li>{{ obs }}</li>
+          }
+        </ul>
+      </section>
 
-    <section class="panel">
-
-      <h3>Top Error Groups</h3>
-
-      @for (
-        group of result.errorGroups;
-        track group.fingerprint
-        ) {
-
-        <div class="error-row">
-
-          <div>
-
-            <strong>
-              {{ group.normalizedMessage }}
-            </strong>
-
-            <small>
-              {{ group.fingerprint }}
-            </small>
-
-          </div>
-
-          <span>
-            {{ group.count }}
-          </span>
-
-        </div>
-
-      }
-
-    </section>
-
+      <section class="panel recommendation-panel">
+        <h3>Recommendations</h3>
+        <ul class="recommendation-list">
+          @for (rec of result.analysis.recommendations; track rec) {
+            <li class="recommendation-item">
+              <span class="check-icon">✓</span>
+              {{ rec }}
+            </li>
+          }
+        </ul>
+      </section>
+    </div>
   </div>
-
 }

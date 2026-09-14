@@ -4,12 +4,20 @@ import {
 } from '@angular/core';
 
 import {
+  CommonModule
+} from '@angular/common';
+
+import {
   Subscription
 } from 'rxjs';
 
 import {
   AnalysisStateService
 } from '../../../core/services/analysis-state.service';
+
+import {
+  LogAnalysisResult
+} from '../../../core/models/log-analysis.model';
 
 import {
   Anomaly
@@ -25,6 +33,7 @@ import {
   standalone: true,
 
   imports: [
+    CommonModule,
     SeverityBadgeComponent
   ],
 
@@ -49,7 +58,7 @@ export class AnomaliesComponent
 
     this.subscription =
       this.state.result$
-        .subscribe(result => {
+        .subscribe((result: LogAnalysisResult | null) => {
 
           this.anomalies =
             result?.anomalies ?? [];

@@ -98,12 +98,18 @@ nav {
 
 nav a {
   padding: 11px 13px;
-
   border-radius: 7px;
-
   color: #cbd5e1;
-
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .nav-icon {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+  }
 }
 
 nav a:hover {

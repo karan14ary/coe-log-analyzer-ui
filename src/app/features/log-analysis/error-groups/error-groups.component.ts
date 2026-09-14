@@ -16,6 +16,7 @@ import {
 } from '../../../core/services/analysis-state.service';
 
 import {
+  LogAnalysisResult,
   ErrorGroupSummary
 } from '../../../core/models/log-analysis.model';
 
@@ -59,7 +60,7 @@ export class ErrorGroupsComponent
 
     this.subscription =
       this.state.result$
-        .subscribe(result => {
+        .subscribe((result: LogAnalysisResult | null) => {
 
           this.groups =
             result?.errorGroups ?? [];

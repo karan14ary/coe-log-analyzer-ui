@@ -27,12 +27,19 @@ import {
   EmptyStateComponent
 } from '../../../shared/components/empty-state/empty-state.component';
 
+import {
+  RouterLink
+} from '@angular/router';
+
 @Component({
   selector: 'app-analysis-summary',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     MetricCardComponent,
-    EmptyStateComponent],
+    EmptyStateComponent,
+    RouterLink
+  ],
   templateUrl: './analysis-summary.component.html',
   styleUrl: './analysis-summary.component.scss'
 })

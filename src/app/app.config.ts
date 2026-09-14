@@ -7,7 +7,8 @@ import {
 } from '@angular/router';
 
 import {
-  provideHttpClient
+  provideHttpClient,
+  withFetch
 } from '@angular/common/http';
 
 import {
@@ -21,7 +22,7 @@ export const appConfig:
 
     provideRouter(routes),
 
-    provideHttpClient()
+    provideHttpClient(withFetch())
 
   ]
 

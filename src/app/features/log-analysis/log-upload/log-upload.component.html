@@ -16,41 +16,41 @@
   </div>
 
   <h3>
-    Upload Log File
+    Upload Log Files
   </h3>
 
   <p>
-    Supported formats: .log, .txt
+    Supported formats: .log, .txt (Select multiple files to analyze them together)
   </p>
 
 
   <label class="file-button">
 
-    Choose File
+    Choose Files
 
     <input
       type="file"
       hidden
+      multiple
       accept=".log,.txt"
-      (change)="onFileSelected($event)"
+      (change)="onFilesSelected($event)"
     />
 
   </label>
 
 
-  @if (selectedFile) {
+  @if (selectedFiles.length > 0) {
 
-    <div class="selected-file">
-
-      <strong>
-        {{ selectedFile.name }}
-      </strong>
-
-      <span>
-        {{ selectedFile.size / 1024 | number:'1.0-2' }}
-        KB
-      </span>
-
+    <div class="selected-files-list">
+      @for (file of selectedFiles; track file.name; let i = $index) {
+        <div class="selected-file">
+          <div class="file-info">
+            <strong>{{ file.name }}</strong>
+            <span>{{ file.size / 1024 | number:'1.0-2' }} KB</span>
+          </div>
+          <button class="remove-file" (click)="removeFile(i)" [disabled]="loading">✕</button>
+        </div>
+      }
     </div>
 
   }
@@ -69,10 +69,10 @@
 
   <button
     class="analyze-button"
-    [disabled]="!selectedFile || loading"
+    [disabled]="selectedFiles.length === 0 || loading"
     (click)="analyze()">
 
-    {{ loading ? 'Analyzing...' : 'Analyze Log' }}
+    {{ loading ? 'Analyzing ' + selectedFiles.length + ' files...' : 'Analyze Logs' }}
 
   </button>
 

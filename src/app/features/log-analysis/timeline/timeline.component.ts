@@ -1,5 +1,6 @@
 import {
   Component,
+  OnInit,
   OnDestroy
 } from '@angular/core';
 
@@ -17,7 +18,7 @@ import {
 
 import {
   LogAnalysisResult,
-  TimelineEvent
+  TimelineTrace
 } from '../../../core/models/log-analysis.model';
 
 import {
@@ -41,31 +42,25 @@ import {
     './timeline.component.scss'
 })
 export class TimelineComponent
-  implements OnDestroy {
+  implements OnInit, OnDestroy {
 
-  events: TimelineEvent[] = [];
+  traces: TimelineTrace[] = [];
 
-  private readonly subscription:
-    Subscription;
+  private subscription: Subscription | null = null;
 
   constructor(
     private readonly state:
     AnalysisStateService
-  ) {
+  ) { }
 
-    this.subscription =
-      this.state.result$
-        .subscribe((result: LogAnalysisResult | null) => {
-
-          this.events =
-            result?.timeline ?? [];
-
-        });
+  ngOnInit(): void {
+    this.subscription = this.state.result$
+      .subscribe((result: LogAnalysisResult | null) => {
+        this.traces = result?.timeline ?? [];
+      });
   }
 
   ngOnDestroy(): void {
-
-    this.subscription.unsubscribe();
-
+    this.subscription?.unsubscribe();
   }
 }

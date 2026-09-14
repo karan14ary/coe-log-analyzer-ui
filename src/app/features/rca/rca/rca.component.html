@@ -3,36 +3,34 @@
   <p>Deep-dive analysis powered by AI.</p>
 </div>
 
-@if (!rca) {
+@if (!rca || !rca.successful || !rca.result) {
   <div class="empty">
-    Run an analysis to generate RCA.
+    {{ rca?.error || 'Run an analysis to generate RCA.' }}
   </div>
 } @else {
   <section class="rca-panel">
     <div class="rca-header">
       <h3>Root Cause</h3>
-      <span>{{ (rca.confidence * 100).toFixed(0) }}% confidence</span>
+      <span>{{ (rca.result.confidence * 100).toFixed(0) }}% confidence</span>
     </div>
 
     <div class="root-cause">
-      {{ rca.rootCause }}
+      {{ rca.result.rootCause }}
     </div>
 
     <div class="section">
       <h4>Impact</h4>
-      <p>{{ rca.impact }}</p>
+      <p>{{ rca.result.impact }}</p>
     </div>
 
     <div class="section">
       <h4>Key Observations / Evidence</h4>
       <ul>
-        @if (rca.observations) {
-          @for (obs of rca.observations; track obs) {
-            <li>{{ obs }}</li>
-          }
-        } @else if (rca.evidence) {
-          @for (ev of rca.evidence; track ev) {
+        @for (ev of rca.result.evidence; track ev) {
+          @if (isString(ev)) {
             <li>{{ ev }}</li>
+          } @else {
+            <li><pre>{{ ev | json }}</pre></li>
           }
         }
       </ul>
@@ -41,7 +39,7 @@
     <div class="section">
       <h4>Recommendations</h4>
       <ol>
-        @for (rec of rca.recommendations; track rec) {
+        @for (rec of rca.result.recommendations; track rec) {
           <li>{{ rec }}</li>
         }
       </ol>

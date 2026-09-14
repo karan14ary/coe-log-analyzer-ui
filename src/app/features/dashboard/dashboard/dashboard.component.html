@@ -26,34 +26,34 @@
 
   <app-metric-card
     label="Total Events"
-    [value]="result ? result.totalLines : '—'">
+    [value]="result ? totalEvents : '—'">
   </app-metric-card>
 
   <app-metric-card
     label="Errors"
-    [value]="result ? result.errorCount : '—'">
+    [value]="result ? errorCount : '—'">
   </app-metric-card>
 
   <app-metric-card
     label="Warnings"
-    [value]="result ? result.warningCount : '—'">
+    [value]="result ? warningCount : '—'">
   </app-metric-card>
 
   <app-metric-card
     label="AI Confidence"
-    [value]="result ? (result.analysis.confidence * 100).toFixed(0) + '%' : '—'">
+    [value]="result ? rcaConfidence : '—'">
   </app-metric-card>
 
 </div>
 
 <div class="dashboard-grid">
 
-  @if (result) {
+  @if (result && result.rca && result.rca.successful && result.rca.result) {
     <section class="panel active-analysis">
-      <h3>Active Analysis Insight</h3>
+      <h3>AI Root Cause Insight</h3>
       <div class="insight-content">
-        <p><strong>Summary:</strong> {{ result.analysis.summary }}</p>
-        <p><strong>Root Cause:</strong> {{ result.analysis.rootCause }}</p>
+        <p><strong>Root Cause:</strong> {{ result.rca.result.rootCause }}</p>
+        <p><strong>Impact:</strong> {{ result.rca.result.impact }}</p>
         <button class="view-rca-btn" routerLink="/rca">View Full RCA</button>
       </div>
     </section>

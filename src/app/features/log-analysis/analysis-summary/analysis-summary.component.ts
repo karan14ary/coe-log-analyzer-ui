@@ -46,8 +46,7 @@ import {
 export class AnalysisSummaryComponent
   implements OnDestroy {
 
-  result:
-    LogAnalysisResult | null = null;
+  result: LogAnalysisResult | null = null;
 
   private readonly subscription:
     Subscription;

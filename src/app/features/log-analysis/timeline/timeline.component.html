@@ -12,40 +12,32 @@
 <section class="timeline">
 
   @for (
-    event of events;
-    track $index
+    trace of traces;
+    track trace.traceId
     ) {
 
     <div class="timeline-item">
 
       <div class="timeline-time">
-
-        {{ event.timestamp }}
-
+        {{ trace.startTime | date:'short' }}
       </div>
-
 
       <div class="timeline-dot"></div>
 
-
       <div class="timeline-content">
+        <div class="trace-header">
+           <strong>Trace ID: {{ trace.traceId }}</strong>
+           <span class="duration">{{ trace.duration }}</span>
+        </div>
 
-        <app-severity-badge
-          [severity]="event.level">
-        </app-severity-badge>
-
-        <p>
-          {{ event.message }}
-        </p>
-
-        @if (event.fingerprint) {
-
-          <small>
-            {{ event.fingerprint }}
-          </small>
-
-        }
-
+        <div class="trace-events">
+           @for (item of trace.events; track item.event.timestamp) {
+             <div class="trace-event">
+               <app-severity-badge [severity]="item.event.level"></app-severity-badge>
+               <span>{{ item.event.message }}</span>
+             </div>
+           }
+        </div>
       </div>
 
     </div>

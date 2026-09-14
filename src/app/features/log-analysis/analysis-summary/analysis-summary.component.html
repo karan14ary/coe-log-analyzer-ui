@@ -3,89 +3,44 @@
   <p>Overview of the analyzed log with AI-driven insights.</p>
 </div>
 
-@if (!result) {
+@if (!result || !result.eventAnalyses || result.eventAnalyses.length === 0) {
   <app-empty-state
     title="No Analysis Available"
-    message="Analyze a log file first to see AI insights."
+    message="Analyze a log file first to see event-level insights."
     icon="📄">
   </app-empty-state>
 } @else {
-  <div class="metric-grid">
-    <app-metric-card
-      label="Total Lines Processed"
-      [value]="result.totalLines">
-    </app-metric-card>
+  <div class="analysis-list">
+    @for (item of result.eventAnalyses; track item.event.timestamp) {
+      <div class="analysis-card" [class.error]="item.event.level === 'ERROR'">
+        <div class="card-header">
+          <span class="timestamp">{{ item.event.timestamp | date:'short' }}</span>
+          <span class="level-badge" [attr.data-level]="item.event.level">{{ item.event.level }}</span>
+          <span class="logger">{{ item.event.logger }}</span>
+        </div>
 
-    <app-metric-card
-      label="Errors Detected"
-      [value]="result.errorCount">
-    </app-metric-card>
+        <div class="message-section">
+          <p class="message">{{ item.maskingResult.maskedMessage }}</p>
+        </div>
 
-    <app-metric-card
-      label="Warnings Found"
-      [value]="result.warningCount">
-    </app-metric-card>
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="label">Trace ID:</span>
+            <code>{{ item.traceId || 'N/A' }}</code>
+          </div>
+          <div class="detail-item">
+            <span class="label">Fingerprint:</span>
+            <code>{{ item.fingerprintInfo.fingerprint.substring(0, 8) }}</code>
+          </div>
+        </div>
 
-    <app-metric-card
-      label="AI Confidence"
-      [value]="(result.analysis.confidence * 100).toFixed(0) + '%'">
-    </app-metric-card>
-  </div>
-
-  <div class="grid">
-    <!-- AI Summary & Impact -->
-    <section class="panel ai-insight-panel">
-      <div class="panel-header">
-        <h3>AI Analysis</h3>
-        <span class="severity-badge" [attr.data-severity]="result.analysis.severity.toLowerCase()">
-          {{ result.analysis.severity }}
-        </span>
+        @if (item.exceptionInfo && item.exceptionInfo.type) {
+          <div class="exception-panel">
+            <strong>{{ item.exceptionInfo.type }}</strong>: {{ item.exceptionInfo.message }}
+            <pre class="stack-trace">{{ item.exceptionInfo.stackTrace }}</pre>
+          </div>
+        }
       </div>
-
-      <div class="insight-section">
-        <h4>Summary</h4>
-        <p>{{ result.analysis.summary }}</p>
-      </div>
-
-      <div class="insight-section">
-        <h4>Root Cause Identification</h4>
-        <p class="root-cause">{{ result.analysis.rootCause }}</p>
-      </div>
-
-      <div class="insight-section">
-        <h4>Business Impact</h4>
-        <p>{{ result.analysis.impact }}</p>
-      </div>
-
-      <div class="rca-link-section">
-        <a class="rca-button" routerLink="/rca">
-          View Detailed Root Cause Analysis
-        </a>
-      </div>
-    </section>
-
-    <!-- Observations & Recommendations -->
-    <div class="side-panels">
-      <section class="panel">
-        <h3>Key Observations</h3>
-        <ul class="observation-list">
-          @for (obs of result.analysis.observations; track obs) {
-            <li>{{ obs }}</li>
-          }
-        </ul>
-      </section>
-
-      <section class="panel recommendation-panel">
-        <h3>Recommendations</h3>
-        <ul class="recommendation-list">
-          @for (rec of result.analysis.recommendations; track rec) {
-            <li class="recommendation-item">
-              <span class="check-icon">✓</span>
-              {{ rec }}
-            </li>
-          }
-        </ul>
-      </section>
-    </div>
+    }
   </div>
 }

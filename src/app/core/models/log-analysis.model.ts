@@ -1,4 +1,5 @@
 import {Anomaly} from './anomaly.model';
+import { RcaAnalysisResult } from './rca.model';
 
 export interface AiAnalysisResult {
   summary: string;
@@ -11,37 +12,81 @@ export interface AiAnalysisResult {
   evidence?: string[];
 }
 
-export interface LogAnalysisResult {
-  totalLines: number;
-  errorCount: number;
-  warningCount: number;
-  analysis: AiAnalysisResult;
-  anomalies?: Anomaly[];
-  errorGroups?: ErrorGroupSummary[];
-  timeline?: TimelineEvent[];
+export interface LogEvent {
+  timestamp: string;
+  level: string;
+  message: string;
+  logger: string;
+  thread: string;
+  metadata: Record<string, string>;
 }
 
-// Keeping these for backward compatibility if needed by other components,
-// but the Backend current response uses the above.
-export interface SeverityDistribution {
-  critical: number;
-  error: number;
-  warning: number;
-  info: number;
-  debug: number;
+export interface ExceptionInfo {
+  type: string;
+  message: string;
+  stackTrace: string;
+  cause?: ExceptionInfo;
+}
+
+export interface MaskingResult {
+  maskedMessage: string;
+  maskedValues: string[];
+  sensitiveKeys: string[];
+}
+
+export interface FingerprintInfo {
+  fingerprint: string;
+  algorithm: string;
+}
+
+export interface LogEventAnalysis {
+  event: LogEvent;
+  exceptionInfo: ExceptionInfo;
+  maskingResult: MaskingResult;
+  fingerprintInfo: FingerprintInfo;
+  traceId: string;
+  correlationId: string;
 }
 
 export interface ErrorGroupSummary {
   fingerprint: string;
   normalizedMessage: string;
-  count: number;
+  occurrenceCount: number;
   firstOccurrence: string;
   lastOccurrence: string;
+  samples?: LogEventAnalysis[];
 }
 
-export interface TimelineEvent {
-  timestamp: string;
-  level: string;
-  message: string;
-  fingerprint?: string;
+export interface TimelineTrace {
+  traceId: string;
+  correlationId: string;
+  startTime: string;
+  endTime: string;
+  duration: string;
+  eventCount: number;
+  errorCount: number;
+  rootCauseFingerprint: string;
+  events: LogEventAnalysis[];
+}
+
+export interface LogAnalysisResult {
+  eventAnalyses: LogEventAnalysis[];
+  rca?: RcaAnalysisResult;
+  anomalies?: AnomalyDetectionResult;
+  errorGroups?: ErrorGroupingResult;
+  timeline?: TimelineTrace[];
+}
+
+export interface ErrorGroupingResult {
+  totalEvents: number;
+  uniqueFingerprints: number;
+  groups: ErrorGroupSummary[];
+}
+
+export interface AnomalyDetectionResult {
+  totalEvents: number;
+  totalGroups: number;
+  totalTraces: number;
+  anomalyCount: number;
+  anomalies: Anomaly[];
 }

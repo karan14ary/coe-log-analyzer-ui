@@ -10,6 +10,9 @@ import {
   Router
 } from '@angular/router';
 
+import { forkJoin } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
 import {
   LogAnalysisService
 } from '../../../core/services/log-analysis.service';
@@ -26,24 +29,20 @@ import {
 })
 export class LogUploadComponent {
 
-  selectedFile: File | null = null;
+  selectedFiles: File[] = [];
 
   loading = false;
 
   error: string | null = null;
 
   constructor(
-    private readonly logAnalysisService:
-    LogAnalysisService,
-
-    private readonly analysisState:
-    AnalysisStateService,
-
-    private readonly router:
-    Router
+    private readonly logAnalysisService: LogAnalysisService,
+    private readonly logServiceExtra: LogAnalysisService, // using same instance but for clarity in orchestration
+    private readonly analysisState: AnalysisStateService,
+    private readonly router: Router
   ) {}
 
-  onFileSelected(
+  onFilesSelected(
     event: Event
   ): void {
 
@@ -54,55 +53,67 @@ export class LogUploadComponent {
       return;
     }
 
-    this.selectedFile =
-      input.files[0];
+    this.selectedFiles =
+      Array.from(input.files);
 
     this.error = null;
   }
 
-  analyze(): void {
+  removeFile(index: number): void {
+    this.selectedFiles.splice(index, 1);
+  }
 
-    if (!this.selectedFile) {
+  async analyze(): Promise<void> {
 
-      this.error =
-        'Please select a log file.';
-
+    if (this.selectedFiles.length === 0) {
+      this.error = 'Please select at least one log file.';
       return;
     }
 
     this.loading = true;
-
     this.error = null;
 
-    this.logAnalysisService
-      .analyze(this.selectedFile)
-      .subscribe({
+    try {
+      // Merge all files into one for the backend
+      const mergedBlob = await this.mergeFiles(this.selectedFiles);
+      const file = new File([mergedBlob], 'merged_logs.log', { type: 'text/plain' });
 
-        next: result => {
-
-          this.analysisState
-            .setResult(result);
-
+      // Orchestrate multiple backend calls for a "Smart" experience
+      forkJoin({
+        eventAnalyses: this.logAnalysisService.analyze(file),
+        rca: this.logAnalysisService.rca(file),
+        anomalies: this.logAnalysisService.anomalies(file),
+        errorGroups: this.logServiceExtra.group(file),
+        timeline: this.logServiceExtra.timeline(file)
+      }).subscribe({
+        next: (results) => {
+          this.analysisState.setResult(results);
           this.loading = false;
-
-          this.router.navigate([
-            '/analysis'
-          ]);
-
+          this.router.navigate(['/analysis']);
         },
-
-        error: error => {
-
+        error: (error) => {
           console.error(error);
-
-          this.error =
-            'Unable to analyze log file.';
-
+          this.error = 'Analysis failed. Please check the backend connection.';
           this.loading = false;
-
         }
-
       });
+    } catch (e) {
+      console.error(e);
+      this.error = 'Failed to process files.';
+      this.loading = false;
+    }
+  }
+
+  private async mergeFiles(files: File[]): Promise<Blob> {
+    const parts: BlobPart[] = [];
+    for (const file of files) {
+      const content = await file.text();
+      parts.push(content);
+      if (!content.endsWith('\n')) {
+        parts.push('\n'); // Ensure separation between files
+      }
+    }
+    return new Blob(parts, { type: 'text/plain' });
   }
 }
 

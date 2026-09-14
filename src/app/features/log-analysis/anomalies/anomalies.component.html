@@ -63,7 +63,7 @@
             </td>
 
             <td>
-              {{ anomaly.timestamp || '—' }}
+              {{ anomaly.timestamp | date:'short' }}
             </td>
 
           </tr>

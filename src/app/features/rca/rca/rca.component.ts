@@ -2,6 +2,11 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { AnalysisStateService } from '../../../core/services/analysis-state.service';
+import { LogAnalysisService } from '../../../core/services/log-analysis.service';
+
+import {
+  RcaAnalysisResult
+} from '../../../core/models/rca.model';
 
 @Component({
   selector: 'app-rca',
@@ -11,12 +16,15 @@ import { AnalysisStateService } from '../../../core/services/analysis-state.serv
   styleUrl: './rca.component.scss'
 })
 export class RcaComponent implements OnInit, OnDestroy {
-  @Input() rca: any = null;
+  @Input() rca: RcaAnalysisResult | null = null;
 
   private sub: Subscription | null = null;
   private isStandalone = true;
 
-  constructor(private analysisState: AnalysisStateService) {}
+  constructor(
+    private analysisState: AnalysisStateService,
+    private logAnalysisService: LogAnalysisService
+  ) {}
 
   ngOnInit(): void {
     if (this.rca) {
@@ -25,7 +33,7 @@ export class RcaComponent implements OnInit, OnDestroy {
     }
 
     this.sub = this.analysisState.result$.subscribe(res => {
-      this.rca = res ? res.analysis : null;
+      this.rca = res?.rca ?? null;
     });
   }
 
@@ -33,6 +41,10 @@ export class RcaComponent implements OnInit, OnDestroy {
     if (this.isStandalone) {
       this.sub?.unsubscribe();
     }
+  }
+
+  isString(val: any): boolean {
+    return typeof val === 'string';
   }
 
 }

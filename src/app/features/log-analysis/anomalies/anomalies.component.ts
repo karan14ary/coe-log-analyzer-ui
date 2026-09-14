@@ -1,5 +1,6 @@
 import {
   Component,
+  OnInit,
   OnDestroy
 } from '@angular/core';
 
@@ -44,31 +45,25 @@ import {
     './anomalies.component.scss'
 })
 export class AnomaliesComponent
-  implements OnDestroy {
+  implements OnInit, OnDestroy {
 
   anomalies: Anomaly[] = [];
 
-  private readonly subscription:
-    Subscription;
+  private subscription: Subscription | null = null;
 
   constructor(
     private readonly state:
     AnalysisStateService
-  ) {
+  ) { }
 
-    this.subscription =
-      this.state.result$
-        .subscribe((result: LogAnalysisResult | null) => {
-
-          this.anomalies =
-            result?.anomalies ?? [];
-
-        });
+  ngOnInit(): void {
+    this.subscription = this.state.result$
+      .subscribe((result: LogAnalysisResult | null) => {
+        this.anomalies = result?.anomalies?.anomalies ?? [];
+      });
   }
 
   ngOnDestroy(): void {
-
-    this.subscription.unsubscribe();
-
+    this.subscription?.unsubscribe();
   }
 }

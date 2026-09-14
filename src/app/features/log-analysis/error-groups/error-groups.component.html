@@ -63,16 +63,16 @@
 
             <td>
               <strong>
-                {{ group.count }}
+                {{ group.occurrenceCount }}
               </strong>
             </td>
 
             <td>
-              {{ group.firstOccurrence }}
+              {{ group.firstOccurrence | date:'short' }}
             </td>
 
             <td>
-              {{ group.lastOccurrence }}
+              {{ group.lastOccurrence | date:'short' }}
             </td>
 
           </tr>

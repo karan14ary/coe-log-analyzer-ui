@@ -52,6 +52,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  get totalEvents(): number {
+    return this.result?.eventAnalyses?.length ?? 0;
+  }
+
+  get errorCount(): number {
+    return this.result?.eventAnalyses?.filter(e => e.event.level === 'ERROR').length ?? 0;
+  }
+
+  get warningCount(): number {
+    return this.result?.eventAnalyses?.filter(e => e.event.level === 'WARN').length ?? 0;
+  }
+
+  get rcaConfidence(): string {
+    return (this.result?.rca?.result?.confidence ? (this.result.rca.result.confidence * 100).toFixed(0) : '0') + '%';
+  }
+
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
   }

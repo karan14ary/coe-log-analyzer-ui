@@ -5,7 +5,8 @@ import {
 } from 'rxjs';
 
 import {
-  LogAnalysisResult
+  LogAnalysisResult,
+  LogEventAnalysis
 } from '../models/log-analysis.model';
 
 @Injectable({
@@ -32,6 +33,13 @@ export class AnalysisStateService {
 
     return this.resultSubject.value;
 
+  }
+
+  updateResult(partial: Partial<LogAnalysisResult>): void {
+    const current = this.getResult();
+    if (current) {
+      this.setResult({ ...current, ...partial });
+    }
   }
 
   clear(): void {

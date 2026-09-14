@@ -11,8 +11,16 @@ import {
 } from 'rxjs';
 
 import {
-  LogAnalysisResult
+  LogAnalysisResult,
+  LogEventAnalysis,
+  ErrorGroupingResult,
+  TimelineTrace,
+  AnomalyDetectionResult
 } from '../models/log-analysis.model';
+
+import {
+  RcaAnalysisResult
+} from '../models/rca.model';
 
 import {
   IncidentReport
@@ -32,7 +40,7 @@ export class LogAnalysisService {
 
   analyze(
     file: File
-  ): Observable<LogAnalysisResult> {
+  ): Observable<LogEventAnalysis[]> {
 
     const formData =
       new FormData();
@@ -42,10 +50,58 @@ export class LogAnalysisService {
       file
     );
 
-    return this.http.post<LogAnalysisResult>(
+    return this.http.post<LogEventAnalysis[]>(
       `${this.baseUrl}/analyze`,
       formData
     );
+  }
+
+  parse(
+    file: File
+  ): Observable<any[]> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<any[]>(`${this.baseUrl}/parse`, formData);
+  }
+
+  analyzeExceptions(
+    file: File
+  ): Observable<LogEventAnalysis[]> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<LogEventAnalysis[]>(`${this.baseUrl}/analyze-exceptions`, formData);
+  }
+
+  group(
+    file: File
+  ): Observable<ErrorGroupingResult> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<ErrorGroupingResult>(`${this.baseUrl}/group`, formData);
+  }
+
+  timeline(
+    file: File
+  ): Observable<TimelineTrace[]> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<TimelineTrace[]>(`${this.baseUrl}/timeline`, formData);
+  }
+
+  anomalies(
+    file: File
+  ): Observable<AnomalyDetectionResult> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<AnomalyDetectionResult>(`${this.baseUrl}/anomalies`, formData);
+  }
+
+  rca(
+    file: File
+  ): Observable<RcaAnalysisResult> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<RcaAnalysisResult>(`${this.baseUrl}/rca`, formData);
   }
 
   incidentReport(

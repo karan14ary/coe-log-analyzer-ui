@@ -1,5 +1,6 @@
 import {
   Component,
+  OnInit,
   OnDestroy
 } from '@angular/core';
 
@@ -16,8 +17,8 @@ import {
 } from '../../../core/services/analysis-state.service';
 
 import {
-  LogAnalysisResult,
-  ErrorGroupSummary
+  ErrorGroupSummary,
+  ErrorGroupingResult
 } from '../../../core/models/log-analysis.model';
 
 import {
@@ -46,31 +47,25 @@ import {
     './error-groups.component.scss'
 })
 export class ErrorGroupsComponent
-  implements OnDestroy {
+  implements OnInit, OnDestroy {
+
+  private subscription: Subscription | null = null;
 
   groups: ErrorGroupSummary[] = [];
 
-  private readonly subscription:
-    Subscription;
-
   constructor(
-    private readonly state:
-    AnalysisStateService
-  ) {
+    private readonly state: AnalysisStateService
+  ) {}
 
-    this.subscription =
-      this.state.result$
-        .subscribe((result: LogAnalysisResult | null) => {
-
-          this.groups =
-            result?.errorGroups ?? [];
-
-        });
+  ngOnInit(): void {
+    this.subscription = this.state.result$.subscribe(result => {
+      this.groups = result?.errorGroups?.groups ?? [];
+    });
   }
 
   ngOnDestroy(): void {
-
-    this.subscription.unsubscribe();
-
+    this.subscription?.unsubscribe();
   }
 }
+
+import { LogAnalysisService } from '../../../core/services/log-analysis.service';

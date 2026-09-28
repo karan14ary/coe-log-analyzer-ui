@@ -9,6 +9,13 @@
 </div>
 
 
+@if (!traces.length) {
+  <section class="empty-result" role="status">
+    <span class="empty-result-mark" aria-hidden="true">⌁</span>
+    <h3>No timeline data yet</h3>
+    <p>Analyze a log file to reconstruct event traces and their sequence.</p>
+  </section>
+} @else {
 <section class="timeline">
 
   @for (
@@ -45,3 +52,4 @@
   }
 
 </section>
+}

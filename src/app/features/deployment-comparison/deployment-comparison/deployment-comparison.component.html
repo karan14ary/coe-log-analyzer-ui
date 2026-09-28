@@ -15,18 +15,13 @@
 
     <h3>Before Deployment</h3>
 
-    <input
-      type="file"
-      accept=".log,.txt"
-      (change)="selectBefore($event)"
-    />
+    <label class="file-picker">
+      <span class="file-picker-action">Choose before log</span>
+      <input class="visually-hidden-file" type="file" accept=".log,.txt" aria-label="Choose log before deployment" (change)="selectBefore($event)" />
+    </label>
 
     @if (beforeFile) {
-
-      <p>
-        {{ beforeFile.name }}
-      </p>
-
+      <p class="selected-upload"><strong>{{ beforeFile.name }}</strong></p>
     }
 
   </div>
@@ -36,18 +31,13 @@
 
     <h3>After Deployment</h3>
 
-    <input
-      type="file"
-      accept=".log,.txt"
-      (change)="selectAfter($event)"
-    />
+    <label class="file-picker">
+      <span class="file-picker-action">Choose after log</span>
+      <input class="visually-hidden-file" type="file" accept=".log,.txt" aria-label="Choose log after deployment" (change)="selectAfter($event)" />
+    </label>
 
     @if (afterFile) {
-
-      <p>
-        {{ afterFile.name }}
-      </p>
-
+      <p class="selected-upload"><strong>{{ afterFile.name }}</strong></p>
     }
 
   </div>
@@ -57,7 +47,7 @@
 
 @if (error) {
 
-  <div class="error">
+  <div class="error" role="alert">
     {{ error }}
   </div>
 
@@ -65,7 +55,9 @@
 
 
 <button
+  type="button"
   class="compare-button"
+  [attr.aria-busy]="loading"
   [disabled]="
     !beforeFile ||
     !afterFile ||

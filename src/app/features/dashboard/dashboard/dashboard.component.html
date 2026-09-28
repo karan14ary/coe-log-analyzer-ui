@@ -1,103 +1,119 @@
+<div class="dashboard-view">
 <div class="page-header">
-
   <div>
-
     <h2>Operations Dashboard</h2>
-
-    <p>
-      Production log intelligence and
-      incident analysis.
-    </p>
-
+    <p>Production log intelligence and incident analysis.</p>
   </div>
-
-  <button
-    class="primary-button"
-    routerLink="/analyze">
-
-    Analyze New Log
-
+  <button class="primary-button" routerLink="/analyze">
+    <span aria-hidden="true">＋</span> Analyze New Log
   </button>
-
 </div>
 
-
+@if (result) {
 <div class="metric-grid">
-
   <app-metric-card
     label="Total Events"
-    [value]="result ? totalEvents : '—'">
+    [value]="totalEvents">
   </app-metric-card>
-
   <app-metric-card
     label="Errors"
-    [value]="result ? errorCount : '—'">
+    [value]="errorCount">
   </app-metric-card>
-
   <app-metric-card
     label="Warnings"
-    [value]="result ? warningCount : '—'">
+    [value]="warningCount">
   </app-metric-card>
-
   <app-metric-card
     label="AI Confidence"
-    [value]="result ? rcaConfidence : '—'">
+    [value]="result.rca?.result ? rcaConfidence : '—'">
   </app-metric-card>
-
 </div>
+}
 
 <div class="dashboard-grid">
-
-  @if (result && result.rca && result.rca.successful && result.rca.result) {
-    <section class="panel active-analysis">
-      <h3>AI Root Cause Insight</h3>
-      <div class="insight-content">
-        <p><strong>Root Cause:</strong> {{ result.rca.result.rootCause }}</p>
-        <p><strong>Impact:</strong> {{ result.rca.result.impact }}</p>
-        <button class="view-rca-btn" routerLink="/rca">View Full RCA</button>
+  @if (!result) {
+    <section class="panel welcome-panel">
+      <div class="welcome-mark" aria-hidden="true">01</div>
+      <div class="welcome-copy">
+        <p class="eyebrow">Your workspace is ready</p>
+        <h3>Turn production logs into a clear next step.</h3>
+        <p>Start with a log file to surface errors, trace anomalies, and generate an AI-assisted root cause analysis.</p>
+        <button class="primary-button" routerLink="/analyze">Start an analysis <span aria-hidden="true">→</span></button>
       </div>
     </section>
   }
 
-  <section class="panel">
+  @if (result && result.rca && result.rca.successful && result.rca.result) {
+    <section class="panel active-analysis">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Analysis highlight</p>
+          <h3>AI root cause insight</h3>
+        </div>
+        <span class="confidence-chip">{{ rcaConfidence }} confidence</span>
+      </div>
+      <div class="insight-content">
+        <p><strong>Root cause</strong>{{ result.rca.result.rootCause }}</p>
+        <p><strong>Impact</strong>{{ result.rca.result.impact }}</p>
+        <button class="text-button" routerLink="/rca">View full analysis <span aria-hidden="true">→</span></button>
+      </div>
+    </section>
+  }
 
-    <h3>Quick Actions</h3>
+  @if (result) {
+    <section class="panel severity-panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Signal overview</p>
+          <h3>Event severity</h3>
+        </div>
+        <span class="event-total">{{ totalEvents }} events</span>
+      </div>
+      <div class="severity-list">
+        <div class="severity-row">
+          <div class="severity-label"><span class="severity-dot error-dot"></span>Errors <strong>{{ getLevelCount('ERROR') }}</strong></div>
+          <div class="severity-track"><span class="severity-fill error-fill" [style.width.%]="getLevelPercentage('ERROR')"></span></div>
+        </div>
+        <div class="severity-row">
+          <div class="severity-label"><span class="severity-dot warning-dot"></span>Warnings <strong>{{ getLevelCount('WARN') }}</strong></div>
+          <div class="severity-track"><span class="severity-fill warning-fill" [style.width.%]="getLevelPercentage('WARN')"></span></div>
+        </div>
+        <div class="severity-row">
+          <div class="severity-label"><span class="severity-dot info-dot"></span>Info <strong>{{ getLevelCount('INFO') }}</strong></div>
+          <div class="severity-track"><span class="severity-fill info-fill" [style.width.%]="getLevelPercentage('INFO')"></span></div>
+        </div>
+      </div>
+      <button class="text-button" routerLink="/errors">Explore error groups <span aria-hidden="true">→</span></button>
+    </section>
+  }
 
-    <div class="actions">
-
-      <button routerLink="/analyze">
-        Analyze Log
-      </button>
-
-      <button routerLink="/deployment-comparison">
-        Compare Deployment
-      </button>
-
-      <button routerLink="/incident-report">
-        Incident Report
-      </button>
-
+  <section class="panel actions-panel">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Continue your workflow</p>
+        <h3>Quick actions</h3>
+      </div>
     </div>
-
+    <div class="actions">
+      <button routerLink="/analyze"><span aria-hidden="true">＋</span><span>Analyze logs<small>Start with a new file</small></span><span class="action-arrow" aria-hidden="true">→</span></button>
+      <button routerLink="/deployment-comparison"><span aria-hidden="true">⇄</span><span>Compare deployments<small>Spot changes between releases</small></span><span class="action-arrow" aria-hidden="true">→</span></button>
+      <button routerLink="/incident-report"><span aria-hidden="true">▤</span><span>Incident report<small>Prepare a shareable summary</small></span><span class="action-arrow" aria-hidden="true">→</span></button>
+    </div>
   </section>
 
-
-  <section class="panel">
-
-    <h3>AI Capabilities</h3>
-
+  <section class="panel capabilities-panel">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Built for investigation</p>
+        <h3>Analysis toolkit</h3>
+      </div>
+    </div>
     <ul>
-
-      <li>AI Root Cause Analysis</li>
-
-      <li>Exception Analysis</li>
-
-      <li>Anomaly Detection</li>
-
-      <li>Deployment Analysis</li>
-
+      <li><span>01</span>Root cause analysis <a routerLink="/rca" aria-label="Open root cause analysis">→</a></li>
+      <li><span>02</span>Anomaly detection <a routerLink="/anomalies" aria-label="Open anomaly detection">→</a></li>
+      <li><span>03</span>Event timeline <a routerLink="/timeline" aria-label="Open event timeline">→</a></li>
+      <li><span>04</span>Error grouping <a routerLink="/errors" aria-label="Open error groups">→</a></li>
     </ul>
-
   </section>
-
+</div>
 </div>

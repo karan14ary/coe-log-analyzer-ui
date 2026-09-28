@@ -4,9 +4,11 @@
 </div>
 
 @if (!rca || !rca.successful || !rca.result) {
-  <div class="empty">
-    {{ rca?.error || 'Run an analysis to generate RCA.' }}
-  </div>
+  <section class="empty-result" role="status">
+    <span class="empty-result-mark" aria-hidden="true">AI</span>
+    <h3>Root cause analysis unavailable</h3>
+    <p>{{ rca?.error || 'Run an analysis to generate RCA.' }}</p>
+  </section>
 } @else {
   <section class="rca-panel">
     <div class="rca-header">

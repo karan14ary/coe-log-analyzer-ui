@@ -13,12 +13,13 @@
 
   @if (!anomalies.length) {
 
-    <div class="empty">
+    <div class="empty-result" role="status">
       No anomalies detected.
     </div>
 
   } @else {
 
+    <div class="table-wrap">
     <table>
 
       <thead>
@@ -73,6 +74,7 @@
       </tbody>
 
     </table>
+    </div>
 
   }
 

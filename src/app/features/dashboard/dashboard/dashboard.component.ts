@@ -64,6 +64,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return this.result?.eventAnalyses?.filter(e => e.event.level === 'WARN').length ?? 0;
   }
 
+  getLevelCount(level: string): number {
+    return this.result?.eventAnalyses?.filter(e => e.event.level.toUpperCase() === level).length ?? 0;
+  }
+
+  getLevelPercentage(level: string): number {
+    return this.totalEvents ? (this.getLevelCount(level) / this.totalEvents) * 100 : 0;
+  }
+
   get rcaConfidence(): string {
     return (this.result?.rca?.result?.confidence ? (this.result.rca.result.confidence * 100).toFixed(0) : '0') + '%';
   }

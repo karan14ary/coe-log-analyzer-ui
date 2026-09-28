@@ -13,15 +13,28 @@
 </div>
 
 
-<section class="panel">
-
-  <input
-    type="file"
-    accept=".log,.txt"
-    (change)="selectFile($event)"
-  />
+<section class="panel incident-upload" aria-label="Incident report input">
+  <div class="upload-prompt">
+    <h3>Start from a production log</h3>
+    <p>Select a .log or .txt file to generate the report.</p>
+  </div>
+  <label class="file-picker">
+    <span class="file-picker-action">Choose log file</span>
+    <input
+      class="visually-hidden-file"
+      type="file"
+      accept=".log,.txt"
+      aria-label="Choose a log file for the incident report"
+      (change)="selectFile($event)"
+    />
+  </label>
+  @if (selectedFile) {
+    <p class="selected-upload"><strong>{{ selectedFile.name }}</strong></p>
+  }
 
   <button
+    type="button"
+    class="generate-report-button"
     [disabled]="!selectedFile || loading"
     (click)="generate()">
 
@@ -37,7 +50,7 @@
 
 @if (error) {
 
-  <div class="error">
+  <div class="error" role="alert">
     {{ error }}
   </div>
 
@@ -137,10 +150,10 @@
 
 
     <button
+      type="button"
       class="download"
       (click)="downloadMarkdown()">
-
-      Download Markdown Report
+      <span aria-hidden="true">↓</span> Download Markdown Report
 
     </button>
 

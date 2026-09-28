@@ -9,13 +9,13 @@
 </div>
 
 
-<section class="upload-panel">
+<section class="upload-panel" aria-labelledby="upload-title">
 
   <div class="upload-icon">
     📄
   </div>
 
-  <h3>
+  <h3 id="upload-title">
     Upload Log Files
   </h3>
 
@@ -24,18 +24,16 @@
   </p>
 
 
-  <label class="file-button">
-
-    Choose Files
-
+  <label class="file-picker">
+    <span class="file-picker-action">Choose log files</span>
     <input
       type="file"
-      hidden
+      class="visually-hidden-file"
       multiple
       accept=".log,.txt"
+      aria-label="Choose log files"
       (change)="onFilesSelected($event)"
     />
-
   </label>
 
 
@@ -48,7 +46,7 @@
             <strong>{{ file.name }}</strong>
             <span>{{ file.size / 1024 | number:'1.0-2' }} KB</span>
           </div>
-          <button class="remove-file" (click)="removeFile(i)" [disabled]="loading">✕</button>
+          <button type="button" class="remove-file" [attr.aria-label]="'Remove ' + file.name" (click)="removeFile(i)" [disabled]="loading">✕</button>
         </div>
       }
     </div>
@@ -58,7 +56,7 @@
 
   @if (error) {
 
-    <div class="error-message">
+    <div class="error-message" role="alert">
 
       {{ error }}
 
@@ -68,7 +66,9 @@
 
 
   <button
+    type="button"
     class="analyze-button"
+    [attr.aria-busy]="loading"
     [disabled]="selectedFiles.length === 0 || loading"
     (click)="analyze()">
 

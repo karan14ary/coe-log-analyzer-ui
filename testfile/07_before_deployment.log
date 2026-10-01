@@ -1,0 +1,5 @@
+2026-09-13T18:00:01.000+05:45 INFO  [api-gateway] service=api-gateway version=2.4.0 requestCount=1000 errorCount=12 errorRate=1.2 avgLatencyMs=180 p95LatencyMs=320
+2026-09-13T18:05:01.000+05:45 INFO  [order-service] service=order-service version=2.4.0 requestCount=850 errorCount=6 errorRate=0.71 avgLatencyMs=210 p95LatencyMs=390
+2026-09-13T18:10:01.000+05:45 INFO  [payment-service] service=payment-service version=2.4.0 requestCount=600 errorCount=4 errorRate=0.67 avgLatencyMs=145 p95LatencyMs=280
+2026-09-13T18:15:01.000+05:45 WARN  [inventory-service] service=inventory-service version=2.4.0 retryCount=8 deadlocks=1 timeoutCount=3
+2026-09-13T18:20:01.000+05:45 INFO  [system] cpuPercent=58 memoryPercent=64 gcPauseMs=42

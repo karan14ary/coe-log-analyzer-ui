@@ -1,0 +1,9 @@
+2026-09-14T13:00:00.000+05:45 INFO  [api-gateway] traceId=tr-6001 event=RequestStarted endpoint=/api/search
+2026-09-14T13:00:00.120+05:45 INFO  [search-service] traceId=tr-6001 event=SearchStarted query=java
+2026-09-14T13:00:00.240+05:45 INFO  [search-service] traceId=tr-6001 event=SearchCompleted resultCount=42 latencyMs=120
+2026-09-14T13:00:30.000+05:45 WARN  [api-gateway] traceId=tr-6002 event=LatencySpike latencyMs=4820 baselineMs=180
+2026-09-14T13:00:31.000+05:45 WARN  [db-pool] traceId=tr-6003 event=ConnectionPoolExhausted active=50 idle=0 max=50
+2026-09-14T13:00:31.200+05:45 ERROR [order-service] traceId=tr-6004 event=DatabaseTimeout exception=org.postgresql.util.PSQLException message="canceling statement due to statement timeout"
+2026-09-14T13:00:32.000+05:45 ERROR [payment-service] traceId=tr-6005 event=DependencyUnavailable dependency=payment-provider error=HTTP_503
+2026-09-14T13:00:33.000+05:45 WARN  [api-gateway] traceId=tr-6006 event=LatencySpike latencyMs=6210 baselineMs=190
+2026-09-14T13:00:34.000+05:45 INFO  [api-gateway] traceId=tr-6007 event=RecoveryDetected latencyMs=220

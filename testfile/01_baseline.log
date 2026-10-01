@@ -1,0 +1,11 @@
+2026-09-10T09:00:01.120+05:45 INFO  [api-gateway] traceId=tr-1001 spanId=sp-001 service=api-gateway version=2.4.0 Deployment baseline deploymentId=dep-240
+2026-09-10T09:00:01.245+05:45 INFO  [api-gateway] traceId=tr-1001 requestId=req-9001 method=GET path=/api/orders status=200 latencyMs=84
+2026-09-10T09:00:02.010+05:45 INFO  [order-service] traceId=tr-1002 spanId=sp-010 service=order-service version=2.4.0 event=OrderCreated orderId=ORD-10001 status=SUCCESS
+2026-09-10T09:00:02.300+05:45 INFO  [payment-service] traceId=tr-1003 spanId=sp-020 service=payment-service version=2.4.0 event=PaymentAuthorized orderId=ORD-10002 latencyMs=145
+2026-09-10T09:00:03.018+05:45 WARN  [inventory-service] traceId=tr-1004 spanId=sp-030 service=inventory-service version=2.4.0 event=InventoryRetry attempt=1 reason=LOCK_TIMEOUT
+2026-09-10T09:00:03.220+05:45 INFO  [inventory-service] traceId=tr-1004 spanId=sp-030 event=InventoryReserved orderId=ORD-10003
+2026-09-10T09:00:04.500+05:45 INFO  [api-gateway] traceId=tr-1005 requestId=req-9005 method=POST path=/api/orders status=201 latencyMs=126
+2026-09-10T09:00:05.101+05:45 ERROR [notification-service] traceId=tr-1006 spanId=sp-060 service=notification-service version=2.4.0 event=EmailRetry attempt=1 error=SMTP_TIMEOUT
+2026-09-10T09:00:05.410+05:45 INFO  [notification-service] traceId=tr-1006 spanId=sp-060 event=EmailSent status=SUCCESS
+2026-09-10T09:00:06.000+05:45 INFO  [api-gateway] traceId=tr-1007 method=GET path=/api/health status=200 latencyMs=12
+2026-09-10T09:00:07.500+05:45 INFO  [order-service] traceId=tr-1008 event=OrderCompleted orderId=ORD-10004 durationMs=312

@@ -1,0 +1,11 @@
+2026-09-14T09:00:01.100+05:45 INFO  [api-gateway] traceId=tr-2001 spanId=sp-101 service=api-gateway version=2.5.0 Deployment candidate deploymentId=dep-250
+2026-09-14T09:00:01.240+05:45 INFO  [api-gateway] traceId=tr-2001 requestId=req-9101 method=GET path=/api/orders status=200 latencyMs=71
+2026-09-14T09:00:02.010+05:45 INFO  [order-service] traceId=tr-2002 spanId=sp-110 service=order-service version=2.5.0 event=OrderCreated orderId=ORD-20001 status=SUCCESS
+2026-09-14T09:00:02.270+05:45 INFO  [payment-service] traceId=tr-2003 spanId=sp-120 service=payment-service version=2.5.0 event=PaymentAuthorized orderId=ORD-20002 latencyMs=102
+2026-09-14T09:00:03.018+05:45 WARN  [inventory-service] traceId=tr-2004 spanId=sp-130 service=inventory-service version=2.5.0 event=InventoryRetry attempt=1 reason=LOCK_TIMEOUT
+2026-09-14T09:00:03.190+05:45 INFO  [inventory-service] traceId=tr-2004 spanId=sp-130 event=InventoryReserved orderId=ORD-20003
+2026-09-14T09:00:04.500+05:45 INFO  [api-gateway] traceId=tr-2005 requestId=req-9105 method=POST path=/api/orders status=201 latencyMs=101
+2026-09-14T09:00:05.101+05:45 INFO  [notification-service] traceId=tr-2006 spanId=sp-160 service=notification-service version=2.5.0 event=EmailSent status=SUCCESS
+2026-09-14T09:00:06.000+05:45 INFO  [api-gateway] traceId=tr-2007 method=GET path=/api/health status=200 latencyMs=9
+2026-09-14T09:00:07.500+05:45 INFO  [order-service] traceId=tr-2008 event=OrderCompleted orderId=ORD-20004 durationMs=241
+2026-09-14T09:00:08.120+05:45 INFO  [cache-service] traceId=tr-2009 event=CacheHit key=product:1002 latencyMs=4

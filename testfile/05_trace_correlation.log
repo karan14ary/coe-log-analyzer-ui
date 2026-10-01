@@ -1,0 +1,9 @@
+2026-09-14T12:00:00.001+05:45 INFO  [api-gateway] traceId=trace-5001 spanId=gw-01 parentSpanId=- requestId=req-5001 method=POST path=/api/orders
+2026-09-14T12:00:00.021+05:45 INFO  [order-service] traceId=trace-5001 spanId=ord-01 parentSpanId=gw-01 event=OrderValidated
+2026-09-14T12:00:00.041+05:45 INFO  [inventory-service] traceId=trace-5001 spanId=inv-01 parentSpanId=ord-01 event=InventoryReserved
+2026-09-14T12:00:00.061+05:45 INFO  [payment-service] traceId=trace-5001 spanId=pay-01 parentSpanId=ord-01 event=PaymentAuthorized
+2026-09-14T12:00:00.081+05:45 INFO  [order-service] traceId=trace-5001 spanId=ord-02 parentSpanId=ord-01 event=OrderCompleted
+2026-09-14T12:00:00.101+05:45 INFO  [api-gateway] traceId=trace-5001 spanId=gw-02 parentSpanId=gw-01 requestId=req-5001 status=201 latencyMs=100
+2026-09-14T12:01:00.001+05:45 INFO  [api-gateway] traceId=trace-5002 spanId=gw-03 requestId=req-5002 method=GET path=/api/products
+2026-09-14T12:01:00.411+05:45 ERROR [product-service] traceId=trace-5002 spanId=prd-01 parentSpanId=gw-03 exception=java.lang.IllegalStateException message="Cache unavailable"
+2026-09-14T12:01:00.512+05:45 INFO  [api-gateway] traceId=trace-5002 spanId=gw-04 requestId=req-5002 status=200 latencyMs=511 fallback=database

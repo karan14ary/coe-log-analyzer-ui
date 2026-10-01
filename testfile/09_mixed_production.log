@@ -1,0 +1,8 @@
+2026-09-14T19:00:00.001+05:45 INFO  [api-gateway] traceId=tr-9001 service=api-gateway version=2.5.0 method=GET path=/api/customers status=200 latencyMs=98
+2026-09-14T19:00:00.032+05:45 INFO  [customer-service] traceId=tr-9001 event=CustomerFetched customerId=CUST-9001
+2026-09-14T19:00:01.110+05:45 INFO  [order-service] traceId=tr-9002 event=OrderCreated orderId=ORD-9001
+2026-09-14T19:00:01.310+05:45 WARN  [order-service] traceId=tr-9002 event=SlowDatabaseQuery queryType=ORDER_LOOKUP latencyMs=1900
+2026-09-14T19:00:02.500+05:45 ERROR [payment-service] traceId=tr-9003 event=PaymentFailed exception=java.net.SocketTimeoutException
+2026-09-14T19:00:02.700+05:45 INFO  [payment-service] traceId=tr-9003 event=PaymentRetry attempt=1
+2026-09-14T19:00:03.100+05:45 INFO  [payment-service] traceId=tr-9003 event=PaymentAuthorized retrySuccess=true
+2026-09-14T19:00:04.000+05:45 INFO  [order-service] traceId=tr-9002 event=OrderCompleted orderId=ORD-9001
